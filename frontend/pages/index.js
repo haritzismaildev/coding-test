@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 
 export default function Home() {
-  const [users, setUsers] = useState([]);
+  const [salesReps, setSalesReps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8000/api/data")
+    fetch("http://localhost:8080/api/data")
       .then((res) => res.json())
       .then((data) => {
-        setUsers(data.users || []);
+        setSalesReps(data.salesReps || []); // Menggunakan key "salesReps"
         setLoading(false);
       })
       .catch((err) => {
@@ -21,7 +21,7 @@ export default function Home() {
 
   const handleAskQuestion = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/ai", {
+      const response = await fetch("http://localhost:8080/api/ai", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question }),
@@ -43,9 +43,9 @@ export default function Home() {
           <p>Loading...</p>
         ) : (
           <ul>
-            {users.map((user) => (
-              <li key={user.id}>
-                {user.name} - {user.role}
+            {salesReps.map((rep) => (
+              <li key={rep.id}>
+                {rep.name} - {rep.role}
               </li>
             ))}
           </ul>
